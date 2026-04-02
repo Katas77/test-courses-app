@@ -11,7 +11,7 @@ class CoursesRepositoryImpl(
     private val api: CoursesApi,
     private val favoriteDao: FavoriteDao
 ) : CoursesRepository {
-    
+
     override suspend fun getCourses(): Result<List<Course>> {
         return try {
             val response = api.getCourses()
@@ -23,7 +23,7 @@ class CoursesRepositoryImpl(
             Result.failure(e)
         }
     }
-    
+
     override suspend fun toggleFavorite(course: Course) {
         if (favoriteDao.isFavorite(course.id)) {
             favoriteDao.removeFromFavorites(course.toFavoriteEntity())
@@ -31,11 +31,11 @@ class CoursesRepositoryImpl(
             favoriteDao.addToFavorites(course.toFavoriteEntity())
         }
     }
-    
+
     override suspend fun isFavorite(courseId: Int): Boolean {
         return favoriteDao.isFavorite(courseId)
     }
-    
+
     override fun getFavorites(): Flow<List<Course>> {
         return favoriteDao.getFavorites().map { entities ->
             entities.map { entity ->

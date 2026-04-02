@@ -73,6 +73,10 @@ dependencies {
     // Koin
     implementation("io.insert-koin:koin-android:3.5.3")
     implementation("io.insert-koin:koin-androidx-compose:3.5.3")
+        // Coil для загрузки изображений
+    implementation("io.coil-kt:coil-compose:2.5.0")
+        // Material Icons Extended
+    implementation("androidx.compose.material:material-icons-extended:1.6.2")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

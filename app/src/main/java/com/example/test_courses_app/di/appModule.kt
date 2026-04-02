@@ -13,6 +13,6 @@ val appModule = module {
     viewModelOf(::LoginViewModel)
     viewModelOf(::MainViewModel)
     viewModelOf(::FavoriteViewModel)
-    
+
     single<CoursesRepository> { CoursesRepositoryImpl(get(), get()) }
 }
