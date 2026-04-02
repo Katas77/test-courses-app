@@ -5,8 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.Surface
 import androidx.navigation.compose.rememberNavController
-import com.example.test_courses_app.core.ui.CoursesAppTheme
-import com.example.test_courses_app.screens.main.AppNavigation
+import com.example.test_courses_app.presentation.main.AppNavigation
+import com.example.test_courses_app.ui.CoursesAppTheme
 
 class MainActivity : ComponentActivity() {
 

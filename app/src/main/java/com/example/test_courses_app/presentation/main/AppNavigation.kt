@@ -1,15 +1,24 @@
-package com.example.test_courses_app.screens.main
+package com.example.test_courses_app.presentation.main
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.*
-import com.example.test_courses_app.screens.account.AccountScreen
-import com.example.test_courses_app.screens.auth.LoginScreen
-import com.example.test_courses_app.screens.favorite.FavoriteScreen
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.test_courses_app.presentation.account.AccountScreen
+import com.example.test_courses_app.presentation.auth.LoginScreen
+import com.example.test_courses_app.presentation.favorite.FavoriteScreen
 
 @Composable
 fun AppNavigation(navController: androidx.navigation.NavController) {
@@ -24,7 +33,7 @@ fun AppNavigation(navController: androidx.navigation.NavController) {
 
 @Composable
 fun MainScreenWrapper(onLogout: () -> Unit) {
-    val navController = rememberNavController()
+    val rootNavController = rememberNavController()
     var selectedTab by remember { mutableStateOf("main") }
 
     Scaffold(
@@ -34,10 +43,10 @@ fun MainScreenWrapper(onLogout: () -> Unit) {
                     icon = { Text("🏠") },
                     label = { Text("Главная") },
                     selected = selectedTab == "main",
-                    onClick = { 
+                    onClick = {
                         selectedTab = "main"
-                        navController.navigate("main") {
-                            popUpTo(navController.graph.findStartDestination().id)
+                        rootNavController.navigate("main") {
+                            popUpTo(rootNavController.graph.findStartDestination().id)
                             launchSingleTop = true
                         }
                     }
@@ -46,10 +55,10 @@ fun MainScreenWrapper(onLogout: () -> Unit) {
                     icon = { Text("❤️") },
                     label = { Text("Избранное") },
                     selected = selectedTab == "favorite",
-                    onClick = { 
+                    onClick = {
                         selectedTab = "favorite"
-                        navController.navigate("favorite") {
-                            popUpTo(navController.graph.findStartDestination().id)
+                        rootNavController.navigate("favorite") {
+                            popUpTo(rootNavController.graph.findStartDestination().id)
                             launchSingleTop = true
                         }
                     }
@@ -58,10 +67,10 @@ fun MainScreenWrapper(onLogout: () -> Unit) {
                     icon = { Text("👤") },
                     label = { Text("Аккаунт") },
                     selected = selectedTab == "account",
-                    onClick = { 
+                    onClick = {
                         selectedTab = "account"
-                        navController.navigate("account") {
-                            popUpTo(navController.graph.findStartDestination().id)
+                        rootNavController.navigate("account") {
+                            popUpTo(rootNavController.graph.findStartDestination().id)
                             launchSingleTop = true
                         }
                     }
@@ -70,10 +79,10 @@ fun MainScreenWrapper(onLogout: () -> Unit) {
         }
     ) { padding ->
         Box(modifier = Modifier.padding(padding)) {
-            when (selectedTab) {
-                "main" -> CoursesScreen()
-                "favorite" -> FavoriteScreen()
-                "account" -> AccountScreen(onLogout)
+            NavHost(navController = rootNavController, startDestination = "main") {
+                composable("main") { CoursesScreen() }
+                composable("favorite") { FavoriteScreen() }
+                composable("account") { AccountScreen(onLogout) }
             }
         }
     }

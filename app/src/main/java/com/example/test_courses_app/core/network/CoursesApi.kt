@@ -1,7 +1,5 @@
 package com.example.test_courses_app.core.network
 
-
-
 import com.example.test_courses_app.core.network.dto.CoursesResponse
 import retrofit2.http.GET
 

@@ -1,4 +1,4 @@
-package com.example.test_courses_app.core.ui
+package com.example.test_courses_app.ui
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

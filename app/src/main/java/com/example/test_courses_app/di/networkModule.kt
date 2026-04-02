@@ -1,33 +1,33 @@
-package com.example.test_courses_app.core.network
+package com.example.test_courses_app.di
 
+import com.example.test_courses_app.core.network.CoursesApi
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-object ApiClient {
-
-    private const val BASE_URL = "https://drive.usercontent.google.com/"
-
-    fun create(): CoursesApi {
+val networkModule = module {
+    single {
         val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
-
-        val client = OkHttpClient.Builder()
+        OkHttpClient.Builder()
             .addInterceptor(logging)
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .build()
-
-        val gson = GsonBuilder().setLenient().create()
-
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create(gson))
+    }
+    single {
+        GsonBuilder().setLenient().create()
+    }
+    single {
+        Retrofit.Builder()
+            .baseUrl("https://drive.usercontent.google.com/")
+            .client(get())
+            .addConverterFactory(GsonConverterFactory.create(get()))
             .build()
             .create(CoursesApi::class.java)
     }
