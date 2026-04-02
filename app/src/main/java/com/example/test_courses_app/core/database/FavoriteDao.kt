@@ -12,16 +12,16 @@ import kotlinx.coroutines.flow.Flow
 interface FavoriteDao {
     @Query("SELECT * FROM favorite_courses ORDER BY addedAt DESC")
     fun getFavorites(): Flow<List<FavoriteCourseEntity>>
-    
+
     @Query("SELECT courseId FROM favorite_courses")
     suspend fun getFavoriteIds(): List<Int>
-    
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addToFavorites(course: FavoriteCourseEntity)
-    
+
     @Delete
     suspend fun removeFromFavorites(course: FavoriteCourseEntity)
-    
+
     @Query("SELECT EXISTS(SELECT 1 FROM favorite_courses WHERE courseId = :courseId)")
     suspend fun isFavorite(courseId: Int): Boolean
 }

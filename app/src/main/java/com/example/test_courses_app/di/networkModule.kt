@@ -20,9 +20,7 @@ val networkModule = module {
             .readTimeout(30, TimeUnit.SECONDS)
             .build()
     }
-    single {
-        GsonBuilder().setLenient().create()
-    }
+    single { GsonBuilder().setLenient().create() }
     single {
         Retrofit.Builder()
             .baseUrl("https://drive.usercontent.google.com/")

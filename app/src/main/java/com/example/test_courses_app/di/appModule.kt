@@ -1,8 +1,7 @@
 package com.example.test_courses_app.di
 
-
 import com.example.test_courses_app.domain.repository.CoursesRepository
-import com.example.test_courses_app.domain.repository.CoursesRepositoryImpl
+import com.example.test_courses_app.domain.repository.impl.CoursesRepositoryImpl
 import com.example.test_courses_app.presentation.auth.LoginViewModel
 import com.example.test_courses_app.presentation.favorite.FavoriteViewModel
 import com.example.test_courses_app.presentation.main.MainViewModel

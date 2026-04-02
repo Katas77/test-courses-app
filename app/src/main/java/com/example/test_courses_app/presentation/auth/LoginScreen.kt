@@ -46,7 +46,6 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Опустили заголовок "Вход" ниже (~3 см)
             Spacer(modifier = Modifier.height(210.dp))
 
             Text(
@@ -165,7 +164,6 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                 modifier = Modifier.clickable { }
             )
 
-            // Уменьшили отступ, чтобы поднять ВК и ОК ближе
             Spacer(modifier = Modifier.height(32.dp))
 
             Row(
@@ -176,7 +174,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                     onClick = {
                         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com")))
                     },
-                    backgroundColor = Color(0xFF0077FF) ,
+                    backgroundColor = Color(0xFF0077FF),
                     iconPainter = painterResource(id = com.example.test_courses_app.R.drawable.ic_vk)
                 )
 

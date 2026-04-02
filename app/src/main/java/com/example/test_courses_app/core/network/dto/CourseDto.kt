@@ -13,16 +13,14 @@ data class CourseDto(
     @SerializedName("hasLike") val hasLike: Boolean,
     @SerializedName("publishDate") val publishDate: String
 ) {
-    fun toDomain(): Course {
-        return Course(
-            id = id,
-            title = title,
-            text = text,
-            price = price,
-            rate = rate,
-            startDate = startDate,
-            hasLike = hasLike,
-            publishDate = publishDate
-        )
-    }
+    fun toDomain(): Course = Course(
+        id = id,
+        title = title,
+        text = text,
+        price = price,
+        rate = rate,
+        startDate = startDate,
+        hasLike = hasLike,
+        publishDate = publishDate
+    )
 }

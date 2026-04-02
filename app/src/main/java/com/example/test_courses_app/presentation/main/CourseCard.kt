@@ -50,7 +50,6 @@ fun CourseCard(
                     painter = rememberAsyncImagePainter(
                         model = imageUrl,
                         error = androidx.compose.ui.res.painterResource(android.R.drawable.ic_dialog_info)
-
                     ),
                     contentDescription = null,
                     modifier = Modifier
@@ -151,7 +150,7 @@ fun CourseCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "${course.price} ₽", // Обновленная строка цены
+                        text = "${course.price} ₽",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White
@@ -170,25 +169,23 @@ fun CourseCard(
     }
 }
 
-private fun formatPublishDate(date: String): String {
-    return try {
-        val parts = date.split("-")
-        if (parts.size == 3) {
-            val day = parts[2].toIntOrNull() ?: return date
-            val month = parts[1].toIntOrNull() ?: return date
-            val year = parts[0]
+private fun formatPublishDate(date: String): String = try {
+    val parts = date.split("-")
+    if (parts.size == 3) {
+        val day = parts[2].toIntOrNull() ?: return date
+        val month = parts[1].toIntOrNull() ?: return date
+        val year = parts[0]
 
-            val monthNames = listOf(
-                "января", "февраля", "марта", "апреля", "мая", "июня",
-                "июля", "августа", "сентября", "октября", "ноября", "декабря"
-            )
+        val monthNames = listOf(
+            "января", "февраля", "марта", "апреля", "мая", "июня",
+            "июля", "августа", "сентября", "октября", "ноября", "декабря"
+        )
 
-            val monthName = monthNames.getOrNull(month - 1) ?: return date
-            "$day $monthName $year"
-        } else {
-            date
-        }
-    } catch (e: Exception) {
+        val monthName = monthNames.getOrNull(month - 1) ?: return date
+        "$day $monthName $year"
+    } else {
         date
     }
+} catch (e: Exception) {
+    date
 }

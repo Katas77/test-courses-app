@@ -7,17 +7,22 @@ import androidx.compose.material3.Surface
 import androidx.navigation.compose.rememberNavController
 import com.example.test_courses_app.presentation.main.AppNavigation
 import com.example.test_courses_app.ui.theme.CoursesAppTheme
+import org.koin.androidx.compose.KoinAndroidContext
+import org.koin.core.annotation.KoinExperimentalAPI
 
 class MainActivity : ComponentActivity() {
 
+    @OptIn(KoinExperimentalAPI::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
             CoursesAppTheme {
-                Surface {
-                    val navController = rememberNavController()
-                    AppNavigation(navController)
+                KoinAndroidContext {
+                    Surface {
+                        val navController = rememberNavController()
+                        AppNavigation(navController)
+                    }
                 }
             }
         }

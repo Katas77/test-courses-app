@@ -30,8 +30,6 @@ fun CoursesScreen(viewModel: MainViewModel = koinViewModel()) {
     val errorMessage by viewModel.errorMessage.collectAsState()
     var sortByDate by remember { mutableStateOf(false) }
 
-
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -118,7 +116,6 @@ fun CoursesScreen(viewModel: MainViewModel = koinViewModel()) {
                 )
             }
         }
-
 
         Spacer(modifier = Modifier.height(16.dp))
 

@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class MainViewModel(
     private val repository: CoursesRepository
@@ -46,7 +48,7 @@ class MainViewModel(
 
     fun sortByDate(descending: Boolean) {
         _courses.value = if (descending) {
-            originalCourses.sortedByDescending { it.publishDateMillis() }
+            originalCourses.sortedByDescending { it.publishDate.toMillis() }
         } else {
             originalCourses
         }
@@ -64,5 +66,14 @@ class MainViewModel(
 
     fun retry() {
         loadCourses()
+    }
+
+    private fun String.toMillis(): Long {
+        val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return try {
+            format.parse(this)?.time ?: 0L
+        } catch (e: Exception) {
+            0L
+        }
     }
 }
