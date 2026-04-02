@@ -2,9 +2,11 @@ package com.example.test_courses_app.presentation.auth
 
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -12,7 +14,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -42,7 +46,8 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(60.dp))
+            // Опустили заголовок "Вход" ниже (~3 см)
+            Spacer(modifier = Modifier.height(210.dp))
 
             Text(
                 text = "Вход",
@@ -160,42 +165,54 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                 modifier = Modifier.clickable { }
             )
 
-            Spacer(modifier = Modifier.height(40.dp))
+            // Уменьшили отступ, чтобы поднять ВК и ОК ближе
+            Spacer(modifier = Modifier.height(32.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Button(
+                SocialButton(
                     onClick = {
-                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/")))
+                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com")))
                     },
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(56.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF4A76A8)
-                    )
-                ) {
-                    Text("VK", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.White)
-                }
+                    backgroundColor = Color(0xFF0077FF) ,
+                    iconPainter = painterResource(id = com.example.test_courses_app.R.drawable.ic_vk)
+                )
 
-                Button(
+                SocialButton(
                     onClick = {
-                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://ok.ru/")))
+                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://ok.ru")))
                     },
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(56.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFEE8208)
-                    )
-                ) {
-                    Text("OK", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.White)
-                }
+                    backgroundColor = Color(0xFFEE8208),
+                    iconPainter = painterResource(id = com.example.test_courses_app.R.drawable.ic_ok)
+                )
             }
         }
+    }
+}
+
+@Composable
+private fun RowScope.SocialButton(
+    onClick: () -> Unit,
+    backgroundColor: Color,
+    iconPainter: Painter
+) {
+    Button(
+        onClick = onClick,
+        modifier = Modifier
+            .weight(1f)
+            .height(56.dp),
+        shape = CircleShape,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = backgroundColor
+        ),
+        contentPadding = PaddingValues(0.dp)
+    ) {
+        Image(
+            painter = iconPainter,
+            contentDescription = null,
+            modifier = Modifier.size(28.dp)
+        )
     }
 }

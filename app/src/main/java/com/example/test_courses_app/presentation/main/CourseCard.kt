@@ -29,13 +29,13 @@ fun CourseCard(
     onFavoriteToggle: (Course) -> Unit
 ) {
     var isFavorite by remember { mutableStateOf(course.hasLike) }
-    val imageUrl = when (course.id % 5) {
-        0 -> "https://ui-avatars.com/api/?name=Java+Course&background=4CAF50&color=fff&size=400"
-        1 -> "https://ui-avatars.com/api/?name=Design+Course&background=2196F3&color=fff&size=400"
-        2 -> "https://ui-avatars.com/api/?name=Marketing&background=FF9800&color=fff&size=400"
-        3 -> "https://robohash.org/${course.id}?set=set1&size=400x200"
-        else -> "https://placehold.co/400x200/4CAF50/FFFFFF?text=Course+${course.id}"
+    val imageUrl = when (course.id) {
+        100 -> "https://ui-avatars.com/api/?name=Java+Course&background=4CAF50&color=fff&size=400"
+        102 -> "https://ui-avatars.com/api/?name=Design+Course&background=2196F3&color=fff&size=400"
+        101 -> "https://ui-avatars.com/api/?name=Marketing&background=FF9800&color=fff&size=400"
+        else -> "https://ui-avatars.com/api/?name=Java+Course&background=4CAF50&color=fff&size=400"
     }
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
@@ -151,7 +151,7 @@ fun CourseCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = course.price,
+                        text = "${course.price} ₽", // Обновленная строка цены
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White
