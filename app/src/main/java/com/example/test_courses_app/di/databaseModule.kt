@@ -1,7 +1,7 @@
 package com.example.test_courses_app.di
 
 import androidx.room.Room
-import com.example.test_courses_app.core.database.AppDatabase
+import com.example.test_courses_app.core.database.dao.AppDatabase
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 

@@ -1,6 +1,6 @@
 package com.example.test_courses_app.domain.repository
 
-import com.example.test_courses_app.domain.Course
+import com.example.test_courses_app.domain.model.Course
 import kotlinx.coroutines.flow.Flow
 
 interface CoursesRepository {

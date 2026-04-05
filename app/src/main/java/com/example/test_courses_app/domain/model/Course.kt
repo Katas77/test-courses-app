@@ -1,4 +1,4 @@
-package com.example.test_courses_app.domain
+package com.example.test_courses_app.domain.model
 
 import com.example.test_courses_app.core.database.entity.FavoriteCourseEntity
 import java.text.SimpleDateFormat

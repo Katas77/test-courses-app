@@ -1,6 +1,6 @@
 package com.example.test_courses_app.core.network.dto
 
-import com.example.test_courses_app.domain.Course
+import com.example.test_courses_app.domain.model.Course
 import com.google.gson.annotations.SerializedName
 
 data class CourseDto(

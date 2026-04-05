@@ -1,4 +1,4 @@
-package com.example.test_courses_app.core.database
+package com.example.test_courses_app.core.database.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -16,7 +16,7 @@ interface FavoriteDao {
     @Query("SELECT courseId FROM favorite_courses")
     suspend fun getFavoriteIds(): List<Int>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun addToFavorites(course: FavoriteCourseEntity)
 
     @Delete

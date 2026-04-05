@@ -1,4 +1,4 @@
-package com.example.test_courses_app.core.network
+package com.example.test_courses_app.core.network.api
 
 import com.example.test_courses_app.core.network.dto.CoursesResponse
 import retrofit2.http.GET

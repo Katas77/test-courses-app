@@ -2,19 +2,16 @@ package com.example.test_courses_app.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.test_courses_app.domain.Course
-import com.example.test_courses_app.domain.repository.CoursesRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import com.example.test_courses_app.domain.model.Course
+import com.example.test_courses_app.domain.repository.impl.CoursesRepositoryImpl
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class MainViewModel(
-    private val repository: CoursesRepository
+    private val repository: CoursesRepositoryImpl
 ) : ViewModel() {
-
     private val _courses = MutableStateFlow<List<Course>>(emptyList())
     val courses: StateFlow<List<Course>> = _courses.asStateFlow()
 
@@ -28,6 +25,18 @@ class MainViewModel(
 
     init {
         loadCourses()
+        observeCoursesWithFavorites()
+    }
+
+    private fun observeCoursesWithFavorites() {
+        viewModelScope.launch {
+            repository.getCoursesWithFavorites()
+                .catch { e -> _errorMessage.value = e.message }
+                .collect { courses ->
+                    _courses.value = courses
+                    _isLoading.value = false
+                }
+        }
     }
 
     fun loadCourses() {
@@ -36,13 +45,12 @@ class MainViewModel(
             repository.getCourses()
                 .onSuccess { courses ->
                     originalCourses = courses
-                    _courses.value = courses
                     _errorMessage.value = null
                 }
                 .onFailure { error ->
                     _errorMessage.value = error.message ?: "Ошибка сети"
+                    _isLoading.value = false
                 }
-            _isLoading.value = false
         }
     }
 
@@ -57,23 +65,14 @@ class MainViewModel(
     fun toggleFavorite(course: Course) {
         viewModelScope.launch {
             repository.toggleFavorite(course)
-            val current = _courses.value
-            _courses.value = current.map {
-                if (it.id == course.id) it.copy(hasLike = !it.hasLike) else it
-            }
         }
     }
 
-    fun retry() {
-        loadCourses()
-    }
+    fun retry() = loadCourses()
 
-    private fun String.toMillis(): Long {
-        val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        return try {
-            format.parse(this)?.time ?: 0L
-        } catch (e: Exception) {
-            0L
-        }
+    private fun String.toMillis(): Long = try {
+        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(this)?.time ?: 0L
+    } catch (e: Exception) {
+        0L
     }
 }

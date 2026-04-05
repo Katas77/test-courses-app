@@ -2,7 +2,7 @@ package com.example.test_courses_app.presentation.favorite
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.test_courses_app.domain.Course
+import com.example.test_courses_app.domain.model.Course
 import com.example.test_courses_app.domain.repository.CoursesRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
