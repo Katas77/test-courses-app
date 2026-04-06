@@ -1,6 +1,5 @@
 package com.example.test_courses_app.presentation.main
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -12,6 +11,7 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -29,7 +28,7 @@ import com.example.test_courses_app.presentation.auth.LoginScreen
 import com.example.test_courses_app.presentation.favorite.FavoriteScreen
 
 @Composable
-fun AppNavigation(navController: androidx.navigation.NavController) {
+fun AppNavigation() {
     var isLoggedIn by remember { mutableStateOf(false) }
 
     if (!isLoggedIn) {
@@ -39,16 +38,15 @@ fun AppNavigation(navController: androidx.navigation.NavController) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreenWrapper(onLogout: () -> Unit) {
     val rootNavController = rememberNavController()
-    var selectedTab by remember { mutableStateOf(0) }
+    var selectedTab by remember { mutableIntStateOf(0) }
 
     val navigationItems = listOf(
-        NavigationItem("Главная", Icons.Outlined.Home, Icons.Filled.Home),
-        NavigationItem("Избранное", Icons.Outlined.BookmarkBorder, Icons.Filled.BookmarkBorder),
-        NavigationItem("Аккаунт", Icons.Outlined.AccountCircle, Icons.Filled.AccountCircle)
+        NavigationItem("Главная", Icons.Outlined.Home, Icons.Filled.Home, "0"),
+        NavigationItem("Избранное", Icons.Outlined.BookmarkBorder, Icons.Filled.BookmarkBorder, "1"),
+        NavigationItem("Аккаунт", Icons.Outlined.AccountCircle, Icons.Filled.AccountCircle, "2")
     )
 
     Scaffold(
@@ -56,11 +54,21 @@ fun MainScreenWrapper(onLogout: () -> Unit) {
         bottomBar = {
             NavigationBar(
                 containerColor = Color(0xFF1C1C1E),
-                contentColor = Color.White,
                 tonalElevation = 0.dp
             ) {
                 navigationItems.forEachIndexed { index, item ->
                     NavigationBarItem(
+                        selected = selectedTab == index,
+                        onClick = {
+                            selectedTab = index
+                            rootNavController.navigate(item.route) {
+                                popUpTo(rootNavController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        },
                         icon = {
                             Icon(
                                 imageVector = if (selectedTab == index) item.filledIcon else item.outlinedIcon,
@@ -71,32 +79,22 @@ fun MainScreenWrapper(onLogout: () -> Unit) {
                         label = {
                             Text(
                                 text = item.label,
-                                color = if (selectedTab == index) Color(0xFF4CAF50) else Color.Gray,
-                                fontSize = 12.sp
+                                color = if (selectedTab == index) Color(0xFF4CAF50) else Color.Gray
                             )
-                        },
-                        selected = selectedTab == index,
-                        onClick = {
-                            selectedTab = index
-                            rootNavController.navigate(index.toString()) {
-                                popUpTo(rootNavController.graph.findStartDestination().id)
-                                launchSingleTop = true
-                            }
-                        },
-                        colors = NavigationBarItemDefaults.colors(
-                            indicatorColor = Color.Transparent
-                        )
+                        }
                     )
                 }
             }
         }
     ) { padding ->
-        Box(modifier = Modifier.padding(padding)) {
-            NavHost(navController = rootNavController, startDestination = "0") {
-                composable("0") { CoursesScreen() }
-                composable("1") { FavoriteScreen() }
-                composable("2") { AccountScreen(onLogout) }
-            }
+        NavHost(
+            navController = rootNavController,
+            startDestination = "0",
+            modifier = Modifier.padding(padding)
+        ) {
+            composable("0") { CoursesScreen() }
+            composable("1") { FavoriteScreen() }
+            composable("2") { AccountScreen(onLogout) }
         }
     }
 }
@@ -104,5 +102,7 @@ fun MainScreenWrapper(onLogout: () -> Unit) {
 data class NavigationItem(
     val label: String,
     val outlinedIcon: ImageVector,
-    val filledIcon: ImageVector
+    val filledIcon: ImageVector,
+    val route: String
 )
+
